@@ -23,7 +23,7 @@ label {
     margin-bottom: 10px;
 }
 
-input[type="text"], input[type="date"],[type="email"]{
+input[type="text"], input[type="date"],[type="email"], [type="number"]{
     width: 100%;
     padding: 10px;
     margin-bottom: 30px;
@@ -37,4 +37,9 @@ input[type="text"], input[type="date"],[type="email"]{
 
 button {
     width: 100%;
+    padding: 10px;
+    margin: auto;
+    margin-top: 10px;
+    background-color: #4ec1e9;
+    border-radius: 10px;
 }
