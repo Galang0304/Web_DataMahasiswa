@@ -8,4 +8,3 @@
 - CSS3
 - Bootstrap 5.3.3
 
-web : https://web-data-mahasiswa-24dwsq9qj-galang0304s-projects.vercel.app/
