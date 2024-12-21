@@ -65,26 +65,51 @@ nav ul li.active a {
 }
 
 .stats {
-    display: flex;
-    gap: 20px;
+    padding: 5px;
     color: #333;
     flex-wrap: wrap;
-    margin-bottom: 30px;
-    background-color: #07a4ff;
-    width: 20%;
-    height: 20%;
-    border-radius: 5%;
+    background-color: #07a4ff4e;
+    width: 25%;
+    height: 10%;
+    border-radius: 8px;
+
 }
 
 .card {
-    flex: 1;
+    background-color: #07a4ff;
     min-width: 200px;
-    padding: 20px;
     border-radius: 8px;
     color: #ffffff;
+    margin: auto;
     text-align: center;
+    display: flex;
 }
-
+.card img:hover {
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.card img{
+    background-color: #f3f3f366;
+    border-radius: 10px; 
+    margin-top: 5px;
+    margin-left: 5px;
+}
 .card h2 {
     font-size: 18px;
+    margin-top: 12px;
+}
+.logo {
+    width: 50px;
+    padding: 10px;
+    align-items: center ;
+    height: 50px;
+}
+
+.conten {
+    color: rgb(255, 255, 255);
+    margin-right: auto;
+    padding: 15px;
+    font-size: 10px;
 }
