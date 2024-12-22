@@ -93,7 +93,7 @@ nav ul li.active a {
 .card img{
     background-color: #f3f3f366;
     border-radius: 10px; 
-    margin-top: 5px;
+    margin-top: 10px;
     margin-left: 5px;
 }
 .card h2 {
@@ -111,5 +111,7 @@ nav ul li.active a {
     color: rgb(255, 255, 255);
     margin-right: auto;
     padding: 15px;
-    font-size: 10px;
+}
+.conten h1{
+font-size: 15px;
 }
