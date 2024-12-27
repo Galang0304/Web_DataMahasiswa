@@ -11,7 +11,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-4">
-                <form action="">
+                <form action="dashboard.html" onsubmit="LoginBerhasill()">
                     <div class="text-center">
                         <img class="logo" src="assests/img/logo_mahasiswa-removebg-preview.png" alt="Logo">
                     </div>
@@ -20,7 +20,7 @@
                     <label for="password">Password</label>
                     <input placeholder="Masukan password" type="password">
                     <div class="text-center">
-                        <a class=" btn btn-primary" href="dashboard.html">L O G I N</a>
+                        <input class=" btn btn-primary" type="submit" value="L O G I N">
                     </div>
                 </form>
             </div>
@@ -28,4 +28,9 @@
     </div>
 </body>
 <script src="assests/js/bootstrap.min.js"></script>
+<script>
+    function LoginBerhasill() {
+        alert("Login Berhasil! Anda akan diarahkan ke dashboard.");
+    }
+</script>
 </html>
