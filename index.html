@@ -7,11 +7,21 @@
     <link rel="stylesheet" href="assests/css/bootstrap.min.css">
     <link rel="stylesheet" href="assests/style.css">
 </head>
+<style>
+    .putri {
+        background-color: aqua;
+        border-radius: 100px;
+    }
+</style>
 <body>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-4">
+<<<<<<< HEAD
                 <form id="loginForm" onsubmit="handleLogin(event)">
+=======
+                <form action="dashboard.html" onsubmit="LoginBerhasill()">
+>>>>>>> a60d01d7f601d32a18fc46ab604f36793fd546c8
                     <div class="text-center">
                         <img class="logo" src="assests/img/logo_mahasiswa-removebg-preview.png" alt="Logo">
                     </div>
@@ -21,10 +31,14 @@
                     <label for="password">Password</label>
                     <input id="password" name="password" placeholder="Masukan password" type="password" required>
                     <div class="text-center">
+<<<<<<< HEAD
                         <button type="submit" class="btn btn-primary">L O G I N</button>
                     </div>
                     <div class="text-center mt-2">
                         <p>Belum punya akun? <a href="register.html">Daftar disini</a></p>
+=======
+                        <input class=" btn btn-primary" type="submit" value="L O G I N">
+>>>>>>> a60d01d7f601d32a18fc46ab604f36793fd546c8
                     </div>
                 </form>
             </div>
@@ -75,4 +89,13 @@
     </script>
     <script src="assests/js/bootstrap.min.js"></script>
 </body>
+<<<<<<< HEAD
+=======
+<script src="assests/js/bootstrap.min.js"></script>
+<script>
+    function LoginBerhasill() {
+        alert("Login Berhasil! Anda akan diarahkan ke dashboard.");
+    }
+</script>
+>>>>>>> a60d01d7f601d32a18fc46ab604f36793fd546c8
 </html>
