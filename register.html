@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="assests/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assests/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <div class="text-center">
+                        <img class="logo" src="assests/img/logo_mahasiswa-removebg-preview.png" alt="Logo">
+                    </div>
+                    <div id="alertMessage"></div>
+                    <label for="nama">Nama Lengkap</label>
+                    <input id="nama" name="nama" placeholder="Masukan Nama Lengkap" type="text" required>
+                    
+                    <label for="email">Email</label>
+                    <input id="email" name="email" placeholder="Masukan Email" type="email" required>
+                    
+                    <label for="password">Password</label>
+                    <input id="password" name="password" placeholder="Masukan Password" type="password" required>
+                    
+                    <label for="konfirmasi_password">Konfirmasi Password</label>
+                    <input id="konfirmasi_password" name="konfirmasi_password" placeholder="Konfirmasi Password" type="password" required>
+                    
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-primary">D A F T A R</button>
+                    </div>
+                    <div class="text-center mt-2">
+                        <p>Sudah punya akun? <a href="index.html">Login disini</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const nama = document.getElementById('nama').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const konfirmasi_password = document.getElementById('konfirmasi_password').value;
+            const alertDiv = document.getElementById('alertMessage');
+
+            if (password !== konfirmasi_password) {
+                alertDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        Password dan konfirmasi password tidak cocok
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const response = await fetch('http://192.168.215.1:5000/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nama, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Simpan token
+                    localStorage.setItem('token', data.token);
+                    // Tampilkan token
+                    alert('Token anda: ' + data.token);
+                    // Redirect ke dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alertDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            ${data.message}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                alertDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        Terjadi kesalahan saat registrasi
+                    </div>
+                `;
+            }
+        }
+    </script>
+    <script src="assests/js/bootstrap.min.js"></script>
+</body>
+</html> 

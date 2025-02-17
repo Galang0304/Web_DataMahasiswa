@@ -3,38 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-    <link rel="stylesheet" href="assests/dashboard.css">
-    <link rel="stylesheet" href="assests/bootstrap.min.css">
+    <title>Dashboard - Data Mahasiswa</title>
+    <link rel="stylesheet" href="assests/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assests/style.css">
 </head>
 <body>
-    <aside class="sidebar">
-        <div class="profile">
-            <h3>galang</h3>
-            <p>andigalang@gmail.com</p>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Data Mahasiswa</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showToken()">Lihat Token</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <nav>
-            <ul>
-                <li class="active"><a href="dashboard.html">Home</a></li>
-                <li><a href="data_mahasiswa.html">Data Mahasiswa</a></li>
-                <li><a href="index.html">Logout</a></li>
-            </ul>
-        </nav>
-    </aside>
+    </nav>
 
-    <main class="main-content">
-        <header class="header">
-            <h1>Dashboard</h1>
-        </header>
-
-        <section class="stats">
-            <div class="card">
-                <img class="logo" src="assests/img/detailmahasiswa-removebg-preview.png" alt="">
-                <div class="conten">
-                    <h1>Total Mahasiswa</h1>
-                    <h4>10</h4>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Daftar Mahasiswa</h5>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahMahasiswaModal">
+                            Tambah Mahasiswa
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="alertMessage"></div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>NIM</th>
+                                        <th>Nama</th>
+                                        <th>Jurusan</th>
+                                        <th>Angkatan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mahasiswaTableBody">
+                                    <!-- Data akan diisi melalui JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-        </section>
-    </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Mahasiswa -->
+    <div class="modal fade" id="tambahMahasiswaModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Mahasiswa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="tambahMahasiswaForm" onsubmit="handleTambahMahasiswa(event)">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nim" class="form-label">NIM</label>
+                            <input type="text" class="form-control" id="nim" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jurusan" class="form-label">Jurusan</label>
+                            <input type="text" class="form-control" id="jurusan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="angkatan" class="form-label">Angkatan</label>
+                            <input type="number" class="form-control" id="angkatan" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk menampilkan token
+        function showToken() {
+            const token = localStorage.getItem('token');
+            alert('Token anda: ' + token);
+        }
+
+        // Check authentication
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'index.html';
+            }
+            return token;
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+
+        // Load data mahasiswa
+        async function loadMahasiswa() {
+            const token = checkAuth();
+            try {
+                const response = await fetch('http://192.168.215.1:5000/api/mahasiswa', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Unauthorized');
+                }
+
+                const data = await response.json();
+                const tableBody = document.getElementById('mahasiswaTableBody');
+                
+                tableBody.innerHTML = data.map(mhs => `
+                    <tr>
+                        <td>${mhs.nim}</td>
+                        <td>${mhs.nama}</td>
+                        <td>${mhs.jurusan}</td>
+                        <td>${mhs.angkatan}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning">Edit</button>
+                            <button class="btn btn-sm btn-danger">Hapus</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                if (error.message === 'Unauthorized') {
+                    window.location.href = 'index.html';
+                }
+                document.getElementById('alertMessage').innerHTML = `
+                    <div class="alert alert-danger">
+                        Gagal memuat data mahasiswa
+                    </div>
+                `;
+            }
+        }
+
+        // Handle tambah mahasiswa
+        async function handleTambahMahasiswa(event) {
+            event.preventDefault();
+            const token = checkAuth();
+
+            const mahasiswaData = {
+                nim: document.getElementById('nim').value,
+                nama: document.getElementById('nama').value,
+                jurusan: document.getElementById('jurusan').value,
+                angkatan: document.getElementById('angkatan').value
+            };
+
+            try {
+                const response = await fetch('http://192.168.215.1:5000/api/mahasiswa', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(mahasiswaData)
+                });
+
+                if (response.ok) {
+                    // Reset form dan tutup modal
+                    document.getElementById('tambahMahasiswaForm').reset();
+                    bootstrap.Modal.getInstance(document.getElementById('tambahMahasiswaModal')).hide();
+                    // Reload data
+                    loadMahasiswa();
+                } else {
+                    throw new Error('Failed to add');
+                }
+            } catch (error) {
+                document.getElementById('alertMessage').innerHTML = `
+                    <div class="alert alert-danger">
+                        Gagal menambah data mahasiswa
+                    </div>
+                `;
+            }
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', loadMahasiswa);
+    </script>
+    <script src="assests/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

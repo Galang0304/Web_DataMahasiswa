@@ -11,21 +11,68 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-4">
-                <form action="">
+                <form id="loginForm" onsubmit="handleLogin(event)">
                     <div class="text-center">
                         <img class="logo" src="assests/img/logo_mahasiswa-removebg-preview.png" alt="Logo">
                     </div>
-                    <label for="nama">Nama</label>
-                    <input placeholder="Masukan Nama" type="text">
+                    <div id="alertMessage"></div>
+                    <label for="email">Email</label>
+                    <input id="email" name="email" placeholder="Masukan Email" type="email" required>
                     <label for="password">Password</label>
-                    <input placeholder="Masukan password" type="password">
+                    <input id="password" name="password" placeholder="Masukan password" type="password" required>
                     <div class="text-center">
-                        <a class=" btn btn-primary" href="dashboard.html">L O G I N</a>
+                        <button type="submit" class="btn btn-primary">L O G I N</button>
+                    </div>
+                    <div class="text-center mt-2">
+                        <p>Belum punya akun? <a href="register.html">Daftar disini</a></p>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const alertDiv = document.getElementById('alertMessage');
+
+            try {
+                const response = await fetch('http://192.168.215.1:5000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Simpan token
+                    localStorage.setItem('token', data.token);
+                    // Tampilkan token
+                    alert('Token anda: ' + data.token);
+                    // Redirect ke dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alertDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            ${data.message}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                alertDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        Terjadi kesalahan saat login
+                    </div>
+                `;
+            }
+        }
+    </script>
+    <script src="assests/js/bootstrap.min.js"></script>
 </body>
-<script src="assests/js/bootstrap.min.js"></script>
 </html>
